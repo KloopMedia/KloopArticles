@@ -1,6 +1,6 @@
 {
-  "name": "kloop-articles",
-  "homepage": "https://kloopmedia.github.io/kloop-articles/",
+  "name": "KloopArticles",
+  "homepage": "https://kloopmedia.github.io/KloopArticles/",
   "version": "0.1.0",
   "private": false,
   "dependencies": {

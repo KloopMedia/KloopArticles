@@ -14,7 +14,7 @@ import {
     Theme
 } from "@material-ui/core";
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Switch,
     Route,
     Link
