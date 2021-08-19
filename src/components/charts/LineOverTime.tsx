@@ -2,43 +2,70 @@ import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import {useQuery} from "@apollo/client";
+import {uniquePerFormatter} from "../../util/Util";
+import {MediaAndCountQuery, NameAndCountQuery} from "../../util/Queries";
+import {CircularProgress} from "@material-ui/core";
 
 const queryString = require('query-string');
 
-type LineOverTimeProps = {data: any[], chartId: string, media?: string}
 
-const LineOverTime = (props: LineOverTimeProps) => {
-
-    const parsed = queryString.parse(window.location.search);
-    const {data, chartId, media} = props
+const LineOverTime = () => {
     const chartTest = useRef<any>(null);
     const [formattedDates, setFormattedDates] = useState<any>([])
+    const [formattedData, setFormattedData] = useState([])
+    const {start, end, media} = queryString.parse(window.location.search);
+
+    console.log(start, end, media)
+
+    const {
+        loading,
+        error,
+        data: incomingData,
+        refetch
+    } = useQuery(media ? MediaAndCountQuery : NameAndCountQuery, {
+        variables: {
+            startDate: start + " 00:00:00",
+            endDate: end + " 24:00:00",
+            media: media ?? ""
+        },
+        notifyOnNetworkStatusChange: true,
+    });
 
 
     useEffect(() => {
-        if (data.length > 0) {
-            let allData: any = {}
-            data.forEach(per => {
-                const dates = per.dates
+        if (incomingData) {
+            console.log(incomingData)
+            const data = uniquePerFormatter(incomingData.unique_per).slice(0, 5)
+            console.log(data)
 
-                Object.keys(dates).forEach(date => allData[date] = {
-                    ...allData[date],
-                    date: date,
-                    [per.name]: dates[date]
+            if (data.length > 0) {
+                setFormattedData(data)
+
+                let allData: any = {}
+                data.forEach((per: any) => {
+                    const dates = per.dates
+
+                    Object.keys(dates).forEach(date => allData[date] = {
+                        ...allData[date],
+                        date: date,
+                        [per.name]: dates[date]
+                    })
                 })
-            })
-            // @ts-ignore
-            let formatted = Object.values(allData).sort((a, b) => new Date(b.date) - new Date(a.date))
-            console.log('all data', formatted)
-            setFormattedDates(formatted)
+                // @ts-ignore
+                let formatted = Object.values(allData).sort((a, b) => new Date(b.date) - new Date(a.date))
+                console.log('all data', formatted)
+                setFormattedDates(formatted)
+            }
         }
-    }, [data])
+
+    }, [incomingData])
 
 
     useLayoutEffect(() => {
         am4core.useTheme(am4themes_animated);
 
-        let chart = am4core.create(chartId, am4charts.XYChart);
+        let chart = am4core.create("linechart", am4charts.XYChart);
 
         chart.colors.step = 4;
 
@@ -62,7 +89,7 @@ const LineOverTime = (props: LineOverTimeProps) => {
             series.tensionX = 0.8;
             series.showOnInit = true;
         }
-        data.forEach(per => createAxisAndSeries(per.name, per.name, false))
+        formattedData.forEach((per: any) => createAxisAndSeries(per.name, per.name, false))
 
         // Add legend
         chart.legend = new am4charts.Legend();
@@ -72,13 +99,12 @@ const LineOverTime = (props: LineOverTimeProps) => {
 
         let title = chart.titles.create();
         if (formattedDates.length > 0) {
-            title.text = `Топ 5 имен ${media ?? ""} за (${formattedDates[formattedDates.length-1].date} - ${formattedDates[0].date})`;
-        }
-        else {
+            title.text = `Топ 5 имен ${media ?? ""} за (${start} - ${end})`;
+        } else {
             title.text = 'Топ 5 имен'
         }
-        title.fontSize = 20;
-        title.fontWeight = "800";
+        title.fontSize = 18;
+        title.fontWeight = "700";
 
         chartTest.current = chart
 
@@ -88,7 +114,9 @@ const LineOverTime = (props: LineOverTimeProps) => {
     }, [formattedDates]);
 
     return (
-        <div id={chartId} style={{width: "100%", height: "500px"}}></div>
+        <div>
+            {loading ? <CircularProgress style={{padding: 20}} /> : <div id={"linechart"} style={{width: "100%", height: "500px"}}/>}
+        </div>
     )
 }
 

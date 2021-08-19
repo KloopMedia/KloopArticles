@@ -1,12 +1,42 @@
-import React, {useLayoutEffect, useRef} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import * as am4core from "@amcharts/amcharts4/core";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import {WordCloud, WordCloudSeries} from "@amcharts/amcharts4/plugins/wordCloud";
+import {NameAndCountQuery} from "../../util/Queries";
+import {useQuery} from "@apollo/client";
+import {uniquePerFormatter} from "../../util/Util";
+import {CircularProgress} from "@material-ui/core";
 
+const queryString = require('query-string');
 
-const NamesCloud = (props: {data: any[]}) => {
-    const {data} = props
+const NamesCloud = () => {
+    const {start, end} = queryString.parse(window.location.search);
+    const [formattedData, setFormattedData] = useState([])
     const chartTest = useRef<any>(null);
+
+
+    const {
+        loading,
+        error,
+        data: incomingData,
+        refetch
+    } = useQuery(NameAndCountQuery, {
+        variables: {
+            startDate: start + " 00:00:00",
+            endDate: end + " 24:00:00"
+        },
+        notifyOnNetworkStatusChange: true,
+    });
+
+    useEffect(() => {
+        if (incomingData) {
+            console.log(incomingData)
+            const data = uniquePerFormatter(incomingData.unique_per).slice(0, 100)
+            console.log(data)
+            setFormattedData(data)
+        }
+
+    }, [incomingData])
 
 
     useLayoutEffect(() => {
@@ -18,7 +48,7 @@ const NamesCloud = (props: {data: any[]}) => {
         series.randomness = 0.1;
         series.rotationThreshold = 0.5;
 
-        series.data = data;
+        series.data = formattedData;
 
         series.dataFields.word = "name";
         series.dataFields.value = "count";
@@ -43,18 +73,20 @@ const NamesCloud = (props: {data: any[]}) => {
 
         let title = chart.titles.create();
         title.text = "Популярные имена";
-        title.fontSize = 20;
-        title.fontWeight = "800";
+        title.fontSize = 18;
+        title.fontWeight = "700";
 
         chartTest.current = chart
 
         return () => {
             chart.dispose();
         };
-    }, [data]);
+    }, [formattedData]);
 
     return (
-        <div id="chartdiv" style={{width: "100%", height: "500px"}}></div>
+        <div>
+            {loading ? <CircularProgress style={{padding: 20}} /> : <div id="chartdiv" style={{width: "100%", height: "500px"}}/>}
+        </div>
     )
 }
 
