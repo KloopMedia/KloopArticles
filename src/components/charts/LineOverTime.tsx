@@ -4,7 +4,7 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import {useQuery} from "@apollo/client";
 import {uniquePerFormatter} from "../../util/Util";
-import {MediaAndCountQuery, NameAndCountQuery} from "../../util/Queries";
+import {MediaAndCountQuery, NameAndCountListQuery, NameAndCountQuery} from "../../util/Queries";
 import {CircularProgress} from "@material-ui/core";
 
 const queryString = require('query-string');
@@ -14,20 +14,34 @@ const LineOverTime = () => {
     const chartTest = useRef<any>(null);
     const [formattedDates, setFormattedDates] = useState<any>([])
     const [formattedData, setFormattedData] = useState([])
-    const {start, end, media} = queryString.parse(window.location.search);
+    const {start, end, media, pers} = queryString.parse(window.location.search, {arrayFormat: 'bracket'});
 
-    console.log(start, end, media)
+    let sliceSize = 5
+
+    console.log(start, end, media, pers)
+
+    let query = NameAndCountQuery
+    if (media) {
+        query = MediaAndCountQuery
+    }
+    else if (pers) {
+        query = NameAndCountListQuery
+        if (!media && pers.length > 0) {
+            sliceSize = pers.length
+        }
+    }
 
     const {
         loading,
         error,
         data: incomingData,
         refetch
-    } = useQuery(media ? MediaAndCountQuery : NameAndCountQuery, {
+    } = useQuery(query, {
         variables: {
             startDate: start + " 00:00:00",
             endDate: end + " 24:00:00",
-            media: media ?? ""
+            media: media ?? "",
+            pers: pers ?? []
         },
         notifyOnNetworkStatusChange: true,
     });
@@ -36,7 +50,7 @@ const LineOverTime = () => {
     useEffect(() => {
         if (incomingData) {
             console.log(incomingData)
-            const data = uniquePerFormatter(incomingData.unique_per).slice(0, 5)
+            const data = uniquePerFormatter(incomingData.unique_per).slice(0, sliceSize)
             console.log(data)
 
             if (data.length > 0) {
@@ -99,7 +113,7 @@ const LineOverTime = () => {
 
         let title = chart.titles.create();
         if (formattedDates.length > 0) {
-            title.text = `Топ 5 имен ${media ?? ""} за (${start} - ${end})`;
+            title.text = `Топ ${sliceSize} имен ${media ?? ""} за (${start} - ${end})`;
         } else {
             title.text = 'Топ 5 имен'
         }
