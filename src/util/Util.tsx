@@ -1,4 +1,7 @@
 import {format, parseISO} from "date-fns";
+import NamesToExclude from "./NamesToExclude";
+import NamesToReplace from "./NamesToReplace";
+
 
 const countDates = (ner: any) => {
     let date_counts: any = {}
@@ -11,15 +14,87 @@ const countDates = (ner: any) => {
 }
 
 const uniquePerFormatter = (unique_per: any) => {
-    return unique_per.map((per: any) => {
-        const date_counts = countDates(per.ner)
 
-        return {
+    const formatted = formatNames(unique_per)
+    const excluded = excludeNames(formatted)
+    const replaced = replaceNames(excluded)
+    const merged = mergeNames(replaced)
+    const final = formatDates(merged).sort((a: any, b: any) => b.count - a.count);
+
+    console.log("uniquePerFormatter", final)
+
+    // const formatted = merged.map((per: any) => {
+    //     const date_counts = countDates(per.ner)
+    //
+    //     return {
+    //         name: per.nom_name,
+    //         count: per.ner_aggregate.aggregate.count,
+    //         dates: date_counts
+    //     }
+    // }).sort((a: any, b: any) => b.count - a.count);
+
+    return final
+}
+
+const formatNames = (arr: any) => {
+    return arr.map((per: any) => ({
             name: per.nom_name,
             count: per.ner_aggregate.aggregate.count,
-            dates: date_counts
+            dates: [...per.ner]
+        })
+    )
+}
+
+const excludeNames = (arr: any) => {
+    const excludeArr = NamesToExclude.map(name => name.Exclude)
+
+    return arr.filter((el: any) => !excludeArr.includes(el.name));
+}
+
+const replaceNames = (arr: any) => {
+    return arr.map((el: any) => {
+        const replacement = NamesToReplace.find((t: any) => el.name === t.OLD)
+        if (replacement) {
+            return {...el, name: replacement.NEW}
+        } else {
+            return el
         }
-    }).sort((a: any, b: any) => b.count - a.count);
+    })
+}
+
+const mergeNames = (arr: any) => {
+    const replaced = NamesToReplace.map((el: any) => el.NEW)
+    const uniqueNames: any = {}
+    const nonunique: any = {}
+
+    arr.forEach((el: any) => {
+        if (replaced.includes(el.name)) {
+            if (uniqueNames[el.name]) {
+                uniqueNames[el.name] = {
+                    name: el.name,
+                    count: uniqueNames[el.name].count + el.count,
+                    dates: [...uniqueNames[el.name].dates, ...el.dates]
+                }
+            } else {
+                uniqueNames[el.name] = {
+                    name: el.name,
+                    count: el.count,
+                    dates: [...el.dates]
+                }
+            }
+        } else {
+            nonunique[el.name] = {name: el.name, count: el.count, dates: [...el.dates]}
+        }
+    })
+
+    const uniqueArr = Object.values(uniqueNames)
+    const nonuniqueArr = Object.values(nonunique)
+
+    return [...uniqueArr, ...nonuniqueArr]
+}
+
+const formatDates = (arr: any) => {
+    return arr.map((el: any) => ({...el, dates: countDates(el.dates)}))
 }
 
 // const getTop100 = () => {

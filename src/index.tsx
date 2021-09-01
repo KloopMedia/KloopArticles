@@ -9,7 +9,6 @@ const client = new ApolloClient({
     uri: "https://splendid-adder-68.hasura.app/v1/graphql",
     cache: new InMemoryCache()
 });
-
 ReactDOM.render(
     <React.StrictMode>
         <ApolloProvider client={client}>

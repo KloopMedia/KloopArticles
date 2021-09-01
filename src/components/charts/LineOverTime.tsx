@@ -13,7 +13,7 @@ const queryString = require('query-string');
 const LineOverTime = () => {
     const chartTest = useRef<any>(null);
     const [formattedDates, setFormattedDates] = useState<any>([])
-    const [formattedData, setFormattedData] = useState([])
+    const [formattedData, setFormattedData] = useState<any>([])
     const {start, end, media, pers} = queryString.parse(window.location.search, {arrayFormat: 'bracket'});
 
     let sliceSize = 5

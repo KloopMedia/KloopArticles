@@ -11,7 +11,7 @@ const queryString = require('query-string');
 
 const NamesCloud = () => {
     const {start, end} = queryString.parse(window.location.search);
-    const [formattedData, setFormattedData] = useState([])
+    const [formattedData, setFormattedData] = useState<any>([])
     const chartTest = useRef<any>(null);
 
 
@@ -31,7 +31,7 @@ const NamesCloud = () => {
     useEffect(() => {
         if (incomingData) {
             console.log(incomingData)
-            const data = uniquePerFormatter(incomingData.unique_per).slice(0, 100)
+            let data = uniquePerFormatter(incomingData.unique_per).slice(0, 100)
             console.log(data)
             setFormattedData(data)
         }
@@ -85,7 +85,8 @@ const NamesCloud = () => {
 
     return (
         <div>
-            {loading ? <CircularProgress style={{padding: 20}} /> : <div id="chartdiv" style={{width: "100%", height: "500px"}}/>}
+            {loading ? <CircularProgress style={{padding: 20}}/> :
+                <div id="chartdiv" style={{width: "100%", height: "500px"}}/>}
         </div>
     )
 }
