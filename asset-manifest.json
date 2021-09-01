@@ -1,35 +1,35 @@
 {
   "files": {
     "main.css": "/KloopArticles/static/css/main.5739ad41.chunk.css",
-    "main.js": "/KloopArticles/static/js/main.89353c4d.chunk.js",
-    "main.js.map": "/KloopArticles/static/js/main.89353c4d.chunk.js.map",
-    "runtime-main.js": "/KloopArticles/static/js/runtime-main.bec800a5.js",
-    "runtime-main.js.map": "/KloopArticles/static/js/runtime-main.bec800a5.js.map",
+    "main.js": "/KloopArticles/static/js/main.32c9e35b.chunk.js",
+    "main.js.map": "/KloopArticles/static/js/main.32c9e35b.chunk.js.map",
+    "runtime-main.js": "/KloopArticles/static/js/runtime-main.10e6394e.js",
+    "runtime-main.js.map": "/KloopArticles/static/js/runtime-main.10e6394e.js.map",
     "xlsx.js": "/KloopArticles/static/js/xlsx.cbf2ff5c.chunk.js",
     "xlsx.js.map": "/KloopArticles/static/js/xlsx.cbf2ff5c.chunk.js.map",
     "static/css/3.c2e18bb2.chunk.css": "/KloopArticles/static/css/3.c2e18bb2.chunk.css",
-    "static/js/3.8526accc.chunk.js": "/KloopArticles/static/js/3.8526accc.chunk.js",
-    "static/js/3.8526accc.chunk.js.map": "/KloopArticles/static/js/3.8526accc.chunk.js.map",
-    "static/js/4.018ee69e.chunk.js": "/KloopArticles/static/js/4.018ee69e.chunk.js",
-    "static/js/4.018ee69e.chunk.js.map": "/KloopArticles/static/js/4.018ee69e.chunk.js.map",
-    "static/js/5.1e74b3f9.chunk.js": "/KloopArticles/static/js/5.1e74b3f9.chunk.js",
-    "static/js/5.1e74b3f9.chunk.js.map": "/KloopArticles/static/js/5.1e74b3f9.chunk.js.map",
-    "static/js/6.8dfd6c0f.chunk.js": "/KloopArticles/static/js/6.8dfd6c0f.chunk.js",
-    "static/js/6.8dfd6c0f.chunk.js.map": "/KloopArticles/static/js/6.8dfd6c0f.chunk.js.map",
+    "static/js/3.a64cdf25.chunk.js": "/KloopArticles/static/js/3.a64cdf25.chunk.js",
+    "static/js/3.a64cdf25.chunk.js.map": "/KloopArticles/static/js/3.a64cdf25.chunk.js.map",
+    "static/js/4.58179512.chunk.js": "/KloopArticles/static/js/4.58179512.chunk.js",
+    "static/js/4.58179512.chunk.js.map": "/KloopArticles/static/js/4.58179512.chunk.js.map",
+    "static/js/5.a69b1a69.chunk.js": "/KloopArticles/static/js/5.a69b1a69.chunk.js",
+    "static/js/5.a69b1a69.chunk.js.map": "/KloopArticles/static/js/5.a69b1a69.chunk.js.map",
+    "static/js/6.9fa6fdf7.chunk.js": "/KloopArticles/static/js/6.9fa6fdf7.chunk.js",
+    "static/js/6.9fa6fdf7.chunk.js.map": "/KloopArticles/static/js/6.9fa6fdf7.chunk.js.map",
     "static/js/7.32c1b6b6.chunk.js": "/KloopArticles/static/js/7.32c1b6b6.chunk.js",
     "static/js/7.32c1b6b6.chunk.js.map": "/KloopArticles/static/js/7.32c1b6b6.chunk.js.map",
     "index.html": "/KloopArticles/index.html",
     "static/css/3.c2e18bb2.chunk.css.map": "/KloopArticles/static/css/3.c2e18bb2.chunk.css.map",
     "static/css/main.5739ad41.chunk.css.map": "/KloopArticles/static/css/main.5739ad41.chunk.css.map",
-    "static/js/3.8526accc.chunk.js.LICENSE.txt": "/KloopArticles/static/js/3.8526accc.chunk.js.LICENSE.txt",
-    "static/js/5.1e74b3f9.chunk.js.LICENSE.txt": "/KloopArticles/static/js/5.1e74b3f9.chunk.js.LICENSE.txt",
-    "static/js/6.8dfd6c0f.chunk.js.LICENSE.txt": "/KloopArticles/static/js/6.8dfd6c0f.chunk.js.LICENSE.txt"
+    "static/js/3.a64cdf25.chunk.js.LICENSE.txt": "/KloopArticles/static/js/3.a64cdf25.chunk.js.LICENSE.txt",
+    "static/js/5.a69b1a69.chunk.js.LICENSE.txt": "/KloopArticles/static/js/5.a69b1a69.chunk.js.LICENSE.txt",
+    "static/js/6.9fa6fdf7.chunk.js.LICENSE.txt": "/KloopArticles/static/js/6.9fa6fdf7.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.bec800a5.js",
+    "static/js/runtime-main.10e6394e.js",
     "static/css/3.c2e18bb2.chunk.css",
-    "static/js/3.8526accc.chunk.js",
+    "static/js/3.a64cdf25.chunk.js",
     "static/css/main.5739ad41.chunk.css",
-    "static/js/main.89353c4d.chunk.js"
+    "static/js/main.32c9e35b.chunk.js"
   ]
 }
