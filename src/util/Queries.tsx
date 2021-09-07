@@ -63,5 +63,21 @@ const MassMediaNamesQuery = gql(`
         }
     `)
 
+const SimilarArticlesQuery = gql(`
+        query MyQuery($startDate: timestamp = "", $endDate: timestamp = "") {
+            similar_articles_view(where: {original_article_publish_date: {_gte: $startDate, _lte: $endDate}}) {
+                original_article_publish_date
+                original_article_scraping_time
+                original_article_title
+                original_article_url
+                publish_date_delta_in_sec
+                similar_article_publish_date
+                similar_article_title
+                similar_article_url
+                weight
+              }
+        }
+    `)
 
-export {MassMediaNamesQuery, MediaAndCountQuery, NameAndCountQuery, NameAndCountListQuery}
+
+export {MassMediaNamesQuery, MediaAndCountQuery, NameAndCountQuery, NameAndCountListQuery, SimilarArticlesQuery}
