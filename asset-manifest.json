@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/KloopArticles/static/css/main.5739ad41.chunk.css",
-    "main.js": "/KloopArticles/static/js/main.208a64e8.chunk.js",
-    "main.js.map": "/KloopArticles/static/js/main.208a64e8.chunk.js.map",
+    "main.js": "/KloopArticles/static/js/main.f84cc47e.chunk.js",
+    "main.js.map": "/KloopArticles/static/js/main.f84cc47e.chunk.js.map",
     "runtime-main.js": "/KloopArticles/static/js/runtime-main.46b424ff.js",
     "runtime-main.js.map": "/KloopArticles/static/js/runtime-main.46b424ff.js.map",
     "xlsx.js": "/KloopArticles/static/js/xlsx.161db490.chunk.js",
@@ -30,6 +30,6 @@
     "static/css/3.c2e18bb2.chunk.css",
     "static/js/3.0c649e51.chunk.js",
     "static/css/main.5739ad41.chunk.css",
-    "static/js/main.208a64e8.chunk.js"
+    "static/js/main.f84cc47e.chunk.js"
   ]
 }
