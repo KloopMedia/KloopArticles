@@ -1,5 +1,5 @@
 import {ForceGraph3D} from "react-force-graph";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useQuery} from "@apollo/client";
 import {SimilarArticlesQuery} from "../../util/Queries";
 
@@ -42,6 +42,9 @@ function Graph3dSentences() {
             let all_nodes: Array<any> = [];
             let linked_nodes: Array<any> = [];
             let unique: Array<string> = [];
+
+            const ratio = Math.max.apply(Math, graphs.map((item: any) => item.weight)) / 20
+
             graphs.forEach((item: any, idx: number) => {
                 // console.log(item)
                 let source_title: string = item.original_article_title;
@@ -64,8 +67,7 @@ function Graph3dSentences() {
                 }
                 const link = {
                     "source": source_url,
-                    "target": target_url,
-                    "weight": item.weight
+                    "target": target_url
                 }
                 if (!unique.includes(node1.id)) {
                     all_nodes.push(node1);
@@ -76,21 +78,70 @@ function Graph3dSentences() {
                     unique.push(node2.id);
                 }
                 linked_nodes.push(link);
+                const cycles = Math.round(item.weight / ratio)
+                // console.log("cycles", cycles)
+                for (let i = 0; i < cycles; i++) {
+                    const curvedLink = {
+                        "source": source_url,
+                        "target": target_url,
+                        "curvature": 0.8,
+                        "rotation": Math.PI * i / 6
+                    }
+                    linked_nodes.push(curvedLink);
+                }
             })
             setMyData({"nodes": all_nodes, "links": linked_nodes})
         }
-
-
     }, [graphs])
+
+    const fgRef = useRef();
+
+    // useEffect(() => {
+    //     const fg: any = fgRef.current;
+    //
+    //     if (fg) {
+    //         // Deactivate existing forces
+    //         fg.d3Force('link').strength((link: any) => {
+    //             console.log('link', link.weight)
+    //             return link.weight * 10
+    //         });
+    //         fg.d3Force('charge').strength(-250)
+    //     }
+    // }, []);
+
+    // const fg: any = fgRef.current;
+
+    // if (fg) {
+        // fg.d3Force('link').distance((link: any) => {
+        //     if (200 - link.weight > 0) {
+        //         return 200 - link.weight
+        //     }
+        //     else {
+        //         return 10
+        //     }
+        // });
+        // fg.d3Force('link').distance((link: any, i: number) => {
+        //     if (i === 5) {
+        //         console.log(link)
+        //         return -0.5
+        //     } else {
+        //         return 200
+        //     }
+        // });
+        // fg.d3Force('charge').strength(-50)
+    // }
+
 
     return (
         <div style={{overflow: "hidden"}}>
             {loading
                 ? "loading"
                 : <ForceGraph3D
+                    ref={fgRef}
                     nodeAutoColorBy="source_url"
                     graphData={myData}
-                    // linkWidth={(item: any) => item.weight / 50 + 2}
+                    linkCurvature="curvature"
+                    linkCurveRotation="rotation"
                 />}
         </div>
     );
